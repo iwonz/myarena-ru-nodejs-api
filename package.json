@@ -3,7 +3,7 @@
   "version": "1.0.2",
   "description": "Library for using server API in MyArena.ru hosting",
   "repository": "https://github.com/iwonz/myarena-ru-nodejs-api.git",
-  "author": "iwonz <iwonz@yandex.ru.npmignore>",
+  "author": "iwonz <iwonz@yandex.ru>",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -11,12 +11,12 @@
     "url": "https://github.com/iwonz/myarena-ru-nodejs-api/issues"
   },
   "homepage": "https://github.com/iwonz/myarena-ru-nodejs-api#readme",
-  "prepublish": "yarn build",
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
     "build": "tsc",
+    "prepare": "tsc",
     "test": "echo \"Error: no test specified\" && exit 0",
     "release": "np"
   },

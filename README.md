@@ -37,16 +37,20 @@ import { Api } from '@iwonz/myarena-ru-nodejs-api';
 const API_TOKEN = 'YOUR_API_TOKEN'
 const api = new Api(API_TOKEN);
 
-try {
-  const status = await api.getStatus();
-  await api.start();
-  await api.stop();
-  await api.restart();
-  await api.changeLevel('de_dust2');
-  const maps = await api.getMaps();
-  await api.consoleCmd('amx_reloadadmins');
-  const resources = await api.getResources();
-} catch (error) {
-  console.error(error);
+async function main() {
+    try {
+      const status = await api.getStatus();
+      await api.start();
+      await api.stop();
+      await api.restart();
+      await api.changeLevel('de_dust2');
+      const maps = await api.getMaps();
+      await api.consoleCmd('amx_reloadadmins');
+      const resources = await api.getResources();
+    } catch (error) {
+      console.error(error);
+    }
 }
+
+main();
 ```
