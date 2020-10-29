@@ -10,6 +10,7 @@ import {
   ApiQuery,
   ApiResponse,
   ApiRestartResponse,
+  ApiStartResponse,
   ApiStatusResponse,
   ApiStopResponse,
 } from './api.interface';
@@ -31,9 +32,9 @@ export class Api {
     this.token = token;
   }
 
-  private executeQuery<R = any>(query: ApiQuery, params: any = {}): ApiResponse<R> {
+  private executeQuery<T = any>(query: ApiQuery, params: any = {}): ApiResponse<T> {
     return axios
-      .get<R>(this.apiUrl, {
+      .get<T>(this.apiUrl, {
         params: {
           query,
           token: this.token,
@@ -48,7 +49,7 @@ export class Api {
   }
 
   public start() {
-    return this.executeQuery<ApiStatusResponse>(ApiQuery.START);
+    return this.executeQuery<ApiStartResponse>(ApiQuery.START);
   }
 
   public stop() {
