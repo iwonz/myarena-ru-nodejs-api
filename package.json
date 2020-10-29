@@ -1,6 +1,6 @@
 {
   "name": "@iwonz/myarena-ru-nodejs-api",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Library for using server API in MyArena.ru hosting",
   "repository": "https://github.com/iwonz/myarena-ru-nodejs-api.git",
   "author": "iwonz <iwonz@yandex.ru>",
