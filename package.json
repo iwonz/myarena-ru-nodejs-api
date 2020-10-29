@@ -15,8 +15,8 @@
     "access": "public"
   },
   "scripts": {
-    "build": "tsc",
-    "prepare": "tsc",
+    "build": "rimraf dist && tsc",
+    "prepublish": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 0",
     "release": "np"
   },
@@ -41,6 +41,7 @@
     "lint-staged": "^10.5.0",
     "np": "*",
     "prettier": "^2.1.2",
+    "rimraf": "^3.0.2",
     "typescript": "^4.0.5"
   },
   "dependencies": {
