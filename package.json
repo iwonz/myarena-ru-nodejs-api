@@ -5,8 +5,12 @@
   "repository": "https://github.com/iwonz/myarena-ru-nodejs-api.git",
   "author": "iwonz <iwonz@yandex.ru>",
   "license": "MIT",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "files": [
+    "dist/"
+  ],
+  "types": "dist/typings/index.d.ts",
   "bugs": {
     "url": "https://github.com/iwonz/myarena-ru-nodejs-api/issues"
   },
@@ -15,7 +19,8 @@
     "access": "public"
   },
   "scripts": {
-    "build": "rimraf dist && tsc",
+    "build": "rimraf dist && npm run tsc",
+    "tsc": "tsc -p tsconfig.json && tsc -p tsconfig-cjs.json",
     "prepublish": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 0",
     "release": "np"
