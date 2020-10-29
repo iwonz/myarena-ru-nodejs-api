@@ -12,7 +12,9 @@ import {
   ApiRestartResponse,
   ApiStatusResponse,
   ApiStopResponse,
-} from './public.interface';
+} from './api.interface';
+
+export * from './api.interface';
 
 const DEFAULT_API_URL = 'https://www.myarena.ru/api.php';
 
