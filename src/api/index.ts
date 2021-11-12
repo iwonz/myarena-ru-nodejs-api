@@ -8,16 +8,14 @@ import {
   ApiGetResourcesResponse,
   ApiOptions,
   ApiQuery,
-  ApiResponse,
   ApiRestartResponse,
   ApiStartResponse,
+  ApiStatus,
   ApiStatusResponse,
   ApiStopResponse,
-} from './api.interface';
+} from './types';
 
-export * from './api.interface';
-
-const DEFAULT_API_URL = 'https://www.myarena.ru/api.php';
+export const DEFAULT_API_URL = 'https://www.myarena.ru/api.php';
 
 export class Api {
   private apiUrl: string;
@@ -32,26 +30,26 @@ export class Api {
     this.token = token;
   }
 
-  private executeQuery(query: ApiQuery.STATUS): ApiResponse<ApiStatusResponse>;
-  private executeQuery(query: ApiQuery.START): ApiResponse<ApiStartResponse>;
-  private executeQuery(query: ApiQuery.STOP): ApiResponse<ApiStopResponse>;
-  private executeQuery(query: ApiQuery.RESTART): ApiResponse<ApiRestartResponse>;
-  private executeQuery(query: ApiQuery.CHANGE_LEVEL, params: ApiChangeLevelParams): ApiResponse<ApiChangeLevelResponse>;
-  private executeQuery(query: ApiQuery.GET_MAPS): ApiResponse<ApiGetMapsResponse>;
-  private executeQuery(query: ApiQuery.CONSOLE_CMD, params: ApiConsoleCmdParams): ApiResponse<ApiConsoleCmdResponse>;
-  private executeQuery(query: ApiQuery.GET_RESOURCES): ApiResponse<ApiGetResourcesResponse>;
+  private executeQuery(query: ApiQuery.STATUS): Promise<ApiStatusResponse>;
+  private executeQuery(query: ApiQuery.START): Promise<ApiStartResponse>;
+  private executeQuery(query: ApiQuery.STOP): Promise<ApiStopResponse>;
+  private executeQuery(query: ApiQuery.RESTART): Promise<ApiRestartResponse>;
+  private executeQuery(query: ApiQuery.CHANGE_LEVEL, params: ApiChangeLevelParams): Promise<ApiChangeLevelResponse>;
+  private executeQuery(query: ApiQuery.GET_MAPS): Promise<ApiGetMapsResponse>;
+  private executeQuery(query: ApiQuery.CONSOLE_CMD, params: ApiConsoleCmdParams): Promise<ApiConsoleCmdResponse>;
+  private executeQuery(query: ApiQuery.GET_RESOURCES): Promise<ApiGetResourcesResponse>;
   private executeQuery(
     query: ApiQuery,
     params: Record<string, any> = {},
   ):
-    | ApiResponse<ApiStatusResponse>
-    | ApiResponse<ApiStartResponse>
-    | ApiResponse<ApiStopResponse>
-    | ApiResponse<ApiRestartResponse>
-    | ApiResponse<ApiChangeLevelResponse>
-    | ApiResponse<ApiGetMapsResponse>
-    | ApiResponse<ApiConsoleCmdResponse>
-    | ApiResponse<ApiGetResourcesResponse> {
+    | Promise<ApiStatusResponse>
+    | Promise<ApiStartResponse>
+    | Promise<ApiStopResponse>
+    | Promise<ApiRestartResponse>
+    | Promise<ApiChangeLevelResponse>
+    | Promise<ApiGetMapsResponse>
+    | Promise<ApiConsoleCmdResponse>
+    | Promise<ApiGetResourcesResponse> {
     return axios
       .get(this.apiUrl, {
         params: {
@@ -60,38 +58,57 @@ export class Api {
           ...params,
         },
       })
-      .then((response) => response?.data);
+      .then((response) => {
+        if (response?.data.status !== ApiStatus.OK) {
+          throw {
+            status: ApiStatus.NO,
+            message: response?.data.message || 'Unknown MyArena.ru API error.',
+          };
+        }
+
+        return response?.data;
+      })
+      .catch((error) => {
+        return {
+          status: ApiStatus.NO,
+          message: error?.message || 'Unknown MyArena.ru API error.',
+        };
+      });
   }
 
-  public getStatus(): ApiResponse<ApiStatusResponse> {
+  public getStatus(): Promise<ApiStatusResponse> {
     return this.executeQuery(ApiQuery.STATUS);
   }
 
-  public start(): ApiResponse<ApiStartResponse> {
+  public start(): Promise<ApiStartResponse> {
     return this.executeQuery(ApiQuery.START);
   }
 
-  public stop(): ApiResponse<ApiStopResponse> {
+  public stop(): Promise<ApiStopResponse> {
     return this.executeQuery(ApiQuery.STOP);
   }
 
-  public restart(): ApiResponse<ApiRestartResponse> {
+  public restart(): Promise<ApiRestartResponse> {
     return this.executeQuery(ApiQuery.RESTART);
   }
 
-  public changeLevel(params: ApiChangeLevelParams): ApiResponse<ApiChangeLevelResponse> {
-    return this.executeQuery(ApiQuery.CHANGE_LEVEL, params);
+  public changeLevel(map: string): Promise<ApiChangeLevelResponse> {
+    return this.executeQuery(ApiQuery.CHANGE_LEVEL, {
+      map,
+    });
   }
 
-  public getMaps(): ApiResponse<ApiGetMapsResponse> {
+  public getMaps(): Promise<ApiGetMapsResponse> {
     return this.executeQuery(ApiQuery.GET_MAPS);
   }
 
-  public consoleCmd(params: ApiConsoleCmdParams): ApiResponse<ApiConsoleCmdResponse> {
-    return this.executeQuery(ApiQuery.CONSOLE_CMD, params);
+  public consoleCmd(cmd: string): Promise<ApiConsoleCmdResponse> {
+    return this.executeQuery(ApiQuery.CONSOLE_CMD, {
+      cmd,
+    });
   }
 
-  public getResources(): ApiResponse<ApiGetResourcesResponse> {
+  public getResources(): Promise<ApiGetResourcesResponse> {
     return this.executeQuery(ApiQuery.GET_RESOURCES);
   }
 }

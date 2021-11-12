@@ -4,13 +4,6 @@ export enum ApiStatus {
   NO = 'NO',
 }
 
-export interface ApiErrorResponse {
-  status: ApiStatus.NO;
-  message: string;
-}
-
-export type ApiResponse<T> = Promise<T | ApiErrorResponse>;
-
 export interface ApiOptions {
   apiUrl?: string;
 }
@@ -28,9 +21,9 @@ export enum ApiQuery {
 
 // status
 export enum ApiStatusResponseOnline {
-  OFFLINE,
-  ONLINE,
-  STARTING_OR_DIE,
+  OFFLINE, // 0 - Сервер offline
+  ONLINE, // Сервер online
+  STARTING_OR_DIE, // Запускается или завис
 }
 
 export interface ApiStatusResponseDataB {
@@ -68,7 +61,7 @@ export interface ApiStatusResponseData {
 }
 
 export interface ApiStatusResponse {
-  status: ApiStatus.OK; // 0 - сервер offline, 1 - сервер online, 2 - сервер запускается или завис
+  status: ApiStatus.OK;
   online: ApiStatusResponseOnline;
   data: ApiStatusResponseData; // LGSL (Live Game Server List) информация о сервере
   server_id: number; // ID сервера
