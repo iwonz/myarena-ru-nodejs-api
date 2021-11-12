@@ -32,9 +32,28 @@ export class Api {
     this.token = token;
   }
 
-  private executeQuery<T = any>(query: ApiQuery, params: any = {}): ApiResponse<T> {
+  private executeQuery(query: ApiQuery.STATUS): ApiResponse<ApiStatusResponse>;
+  private executeQuery(query: ApiQuery.START): ApiResponse<ApiStartResponse>;
+  private executeQuery(query: ApiQuery.STOP): ApiResponse<ApiStopResponse>;
+  private executeQuery(query: ApiQuery.RESTART): ApiResponse<ApiRestartResponse>;
+  private executeQuery(query: ApiQuery.CHANGE_LEVEL, params: ApiChangeLevelParams): ApiResponse<ApiChangeLevelResponse>;
+  private executeQuery(query: ApiQuery.GET_MAPS): ApiResponse<ApiGetMapsResponse>;
+  private executeQuery(query: ApiQuery.CONSOLE_CMD, params: ApiConsoleCmdParams): ApiResponse<ApiConsoleCmdResponse>;
+  private executeQuery(query: ApiQuery.GET_RESOURCES): ApiResponse<ApiGetResourcesResponse>;
+  private executeQuery(
+    query: ApiQuery,
+    params: Record<string, any> = {},
+  ):
+    | ApiResponse<ApiStatusResponse>
+    | ApiResponse<ApiStartResponse>
+    | ApiResponse<ApiStopResponse>
+    | ApiResponse<ApiRestartResponse>
+    | ApiResponse<ApiChangeLevelResponse>
+    | ApiResponse<ApiGetMapsResponse>
+    | ApiResponse<ApiConsoleCmdResponse>
+    | ApiResponse<ApiGetResourcesResponse> {
     return axios
-      .get<T>(this.apiUrl, {
+      .get(this.apiUrl, {
         params: {
           query,
           token: this.token,
@@ -44,35 +63,35 @@ export class Api {
       .then((response) => response?.data);
   }
 
-  public getStatus() {
-    return this.executeQuery<ApiStatusResponse>(ApiQuery.STATUS);
+  public getStatus(): ApiResponse<ApiStatusResponse> {
+    return this.executeQuery(ApiQuery.STATUS);
   }
 
-  public start() {
-    return this.executeQuery<ApiStartResponse>(ApiQuery.START);
+  public start(): ApiResponse<ApiStartResponse> {
+    return this.executeQuery(ApiQuery.START);
   }
 
-  public stop() {
-    return this.executeQuery<ApiStopResponse>(ApiQuery.STOP);
+  public stop(): ApiResponse<ApiStopResponse> {
+    return this.executeQuery(ApiQuery.STOP);
   }
 
-  public restart() {
-    return this.executeQuery<ApiRestartResponse>(ApiQuery.RESTART);
+  public restart(): ApiResponse<ApiRestartResponse> {
+    return this.executeQuery(ApiQuery.RESTART);
   }
 
-  public changeLevel(params: ApiChangeLevelParams) {
-    return this.executeQuery<ApiChangeLevelResponse>(ApiQuery.CHANGE_LEVEL, params);
+  public changeLevel(params: ApiChangeLevelParams): ApiResponse<ApiChangeLevelResponse> {
+    return this.executeQuery(ApiQuery.CHANGE_LEVEL, params);
   }
 
-  public getMaps() {
-    return this.executeQuery<ApiGetMapsResponse>(ApiQuery.GET_MAPS);
+  public getMaps(): ApiResponse<ApiGetMapsResponse> {
+    return this.executeQuery(ApiQuery.GET_MAPS);
   }
 
-  public consoleCmd(params: ApiConsoleCmdParams) {
-    return this.executeQuery<ApiConsoleCmdResponse>(ApiQuery.CONSOLE_CMD, params);
+  public consoleCmd(params: ApiConsoleCmdParams): ApiResponse<ApiConsoleCmdResponse> {
+    return this.executeQuery(ApiQuery.CONSOLE_CMD, params);
   }
 
-  public getResources() {
-    return this.executeQuery<ApiGetResourcesResponse>(ApiQuery.GET_RESOURCES);
+  public getResources(): ApiResponse<ApiGetResourcesResponse> {
+    return this.executeQuery(ApiQuery.GET_RESOURCES);
   }
 }

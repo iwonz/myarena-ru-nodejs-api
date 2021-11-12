@@ -18,7 +18,7 @@ npm install @iwonz/myarena-ru-nodejs-api
 ```javascript
 import { Api } from '@iwonz/myarena-ru-nodejs-api';
 
-const API_TOKEN = 'YOUR_API_TOKEN'
+const API_TOKEN = 'YOUR_MYARENA_RU_API_TOKEN';
 const api = new Api(API_TOKEN);
 
 api.getStatus().then((response) => console.log(response));
@@ -34,7 +34,7 @@ or using async/await
 ```javascript
 import { Api } from '@iwonz/myarena-ru-nodejs-api';
 
-const API_TOKEN = 'YOUR_API_TOKEN'
+const API_TOKEN = 'YOUR_MYARENA_RU_API_TOKEN';
 const api = new Api(API_TOKEN);
 
 async function main() {

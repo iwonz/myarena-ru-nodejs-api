@@ -19,7 +19,7 @@ export enum ApiQuery {
   STATUS = 'status',
   START = 'start',
   STOP = 'stop',
-  RESTART = 'status',
+  RESTART = 'restart',
   CHANGE_LEVEL = 'changelevel',
   GET_MAPS = 'getmaps',
   CONSOLE_CMD = 'consolecmd',
@@ -68,17 +68,17 @@ export interface ApiStatusResponseData {
 }
 
 export interface ApiStatusResponse {
-  status: ApiStatus.OK;
+  status: ApiStatus.OK; // 0 - сервер offline, 1 - сервер online, 2 - сервер запускается или завис
   online: ApiStatusResponseOnline;
-  data: ApiStatusResponseData;
-  server_id: number;
-  server_name: string;
-  server_address: string;
-  server_maxslots: number;
-  server_location: string;
-  server_type: string;
-  server_dateblock: number;
-  server_daystoblock: number;
+  data: ApiStatusResponseData; // LGSL (Live Game Server List) информация о сервере
+  server_id: number; // ID сервера
+  server_name: string; // Название игры
+  server_address: string; // Адрес сервера
+  server_maxslots: number; // Количество слотов
+  server_location: string; // Название локации
+  server_type: string; // Тип
+  server_dateblock: number; // Время блокировки (timestamp)
+  server_daystoblock: number; // Дней до окончания аренды
 }
 
 // start
@@ -106,13 +106,13 @@ export interface ApiChangeLevelResponse {
 }
 
 export interface ApiChangeLevelParams {
-  map: string;
+  map: string; // Название новой карты нужно указывать без расширения (без .bsp)
 }
 
 // getmaps
 export interface ApiGetMapsResponse {
   status: ApiStatus.OK;
-  maps: string[];
+  maps: string[]; // Массив содержит названия карт
 }
 
 // consolecmd
@@ -122,20 +122,20 @@ export interface ApiConsoleCmdResponse {
 }
 
 export interface ApiConsoleCmdParams {
-  cmd: string;
+  cmd: string; // Консольная команда (только латинские буквы и символы)
 }
 
 // getresources
 export interface ApiGetResourcesResponse {
   status: ApiStatus.OK;
-  cpu_proc: string;
-  mem_used: number;
-  mem_quota: number;
-  mem_proc: number;
-  players: number;
-  players_max: number;
-  players_proc: number;
-  disk_used: number;
-  disk_quota: number;
-  disk_proc: string;
+  cpu_proc: string; // Использование процессора в процентах
+  mem_used: number; // Использовано оперативной памяти (в мегабайтах)
+  mem_quota: number; // Выделено оперативной памяти (в мегабайтах)
+  mem_proc: number; // Использование памяти в процентах
+  players: number; // Количество игроков
+  players_max: number; // Максимальное количество слотов
+  players_proc: number; // Занятость слотов в процентах
+  disk_used: number; // Использовано дисковой квоты (в мегабайтах)
+  disk_quota: number; // Выделено дисковой квоты (в мегабайтах)
+  disk_proc: string; // Использование дисковой квоты в процентах
 }
