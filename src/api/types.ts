@@ -5,7 +5,7 @@ export enum ApiStatus {
 }
 
 export interface ApiOptions {
-  apiUrl?: string;
+  apiEntrypoint?: string;
 }
 
 export enum ApiQuery {

@@ -18,7 +18,7 @@ import {
 export const DEFAULT_API_URL = 'https://www.myarena.ru/api.php';
 
 export class Api {
-  private apiUrl: string;
+  private apiEntrypoint: string;
   private token: string;
 
   constructor(token: string, options?: ApiOptions) {
@@ -26,7 +26,7 @@ export class Api {
       throw new Error('Token not passed.');
     }
 
-    this.apiUrl = options?.apiUrl || DEFAULT_API_URL;
+    this.apiEntrypoint = options?.apiEntrypoint || DEFAULT_API_URL;
     this.token = token;
   }
 
@@ -51,7 +51,7 @@ export class Api {
     | Promise<ApiConsoleCmdResponse>
     | Promise<ApiGetResourcesResponse> {
     return axios
-      .get(this.apiUrl, {
+      .get(this.apiEntrypoint, {
         params: {
           query,
           token: this.token,

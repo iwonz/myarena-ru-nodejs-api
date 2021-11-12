@@ -53,13 +53,13 @@ async function main() {
 main();
 ```
 By default, library use `https://www.myarena.ru/api.php` as MyArena API entrypoint.
-You can also redefine the domain for API requests (in case MyArena changed it during this time).
+You can also redefine it (in case MyArena changed it during this time).
 
-To do this, pass an object with options as the second arguments to the `Api` class constructor.
+To do this, pass an object with property `apiEntrypoint` as the second arguments to the `Api` class constructor.
 ```javascript
 import { Api } from '@iwonz/myarena-ru-nodejs-api';
 
 const api = new Api('YOUR_MYARENA_RU_API_TOKEN', {
-  apiUrl: 'https://www.myarena.ru/api.php'
+  apiEntrypoint: 'https://www.myarena.ru/api.php'
 });
 ```
