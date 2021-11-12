@@ -29,7 +29,7 @@ api.getMaps().then((response) => console.log(response.maps));
 api.consoleCmd('amx_reloadadmins').then((response) => console.log(response));
 api.getResources().then((response) => console.log(response));
 ```
-or using async/await
+or using async/await syntax
 ```javascript
 import { Api } from '@iwonz/myarena-ru-nodejs-api';
 
